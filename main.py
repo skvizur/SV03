@@ -8,11 +8,10 @@ import itertools
 
 #FEMALE AND MALE TABLES
 
-<<<<<<< HEAD
 cols_world = ['Country','Sex', 'Age group', 'year_2010','year_2014']
-=======
+
 cols_world = ['Country','Sex', 'Age group', 'year_2014','year_2010']
->>>>>>> b534cf74ed3068d5c312aca204a72a73527e0937
+
 world_table = pd.read_csv('BMI_heimur.csv', sep =',', header = None, names = cols_world, engine = 'python', skiprows =2)
 
 world_Table = world_table.sort_values(by='Sex',ascending=True)
@@ -41,16 +40,8 @@ only_males = only_males.sort_values(by='Country',ascending=True)
 only_males['Country nr.'] = range(1, len(only_males) + 1)
 only_males = only_males[['Country nr.','Country','Male 2010','Male 2014']]
 
-
-<<<<<<< HEAD
-=======
-
->>>>>>> b534cf74ed3068d5c312aca204a72a73527e0937
 year1_KK = list(only_males.iloc[:,2])
 year2_KK = list(only_males.iloc[:,3])
-
-
-
 
 only_females = DataFrameDict[' Female']
 only_females=only_females.rename(columns = {'Country': 'Country','Sex':'Sex','year_2010':'Female 2010','year_2014':'Female 2014'})
@@ -61,11 +52,6 @@ only_females['Country nr.'] = range(1, len(only_females) + 1)
 only_females = only_females[['Country nr.','Country','Female 2010','Female 2014']]
 
 
-
-<<<<<<< HEAD
-=======
-
->>>>>>> b534cf74ed3068d5c312aca204a72a73527e0937
 country_nr = list(only_females.iloc[:,0])
 country_name = list(only_females.iloc[:,1])
 year1_KVK = list(only_females.iloc[:,2])
@@ -95,19 +81,17 @@ for i in range(len(country_nr)):
 
 #PERCENTAGE TABLES
 
-<<<<<<< HEAD
 cols = ['Country','BothSexes2010','Female (%) 2010', 'Male (%) 2010','Both Sexes (%) 2014', 'Female (%) 2014', 'Male (%) 2014']
 world_table_percentage = pd.read_csv('Londin.csv', sep =',"', header = None, names = cols, engine = 'python', skiprows = 4)
 
 world_table_percentage = world_table_percentage[world_table_percentage.BothSexes2010!= '"No data""']
 world_table_percentage=world_table_percentage.rename(columns = {'BothSexes2010':'Both Sexes (%) 2010'})
-=======
+
 cols = ['Country','BothSexes2014','Female (%) 2014', 'Male (%) 2014','Both Sexes (%) 2010', 'Female (%) 2010', 'Male (%) 2010']
 world_table_percentage = pd.read_csv('Londin.csv', sep =',"', header = None, names = cols, engine = 'python', skiprows = 4)
 
 world_table_percentage = world_table_percentage[world_table_percentage.BothSexes2014!= '"No data""']
 world_table_percentage=world_table_percentage.rename(columns = {'BothSexes2014':'Both Sexes (%) 2014'})
->>>>>>> b534cf74ed3068d5c312aca204a72a73527e0937
 world_table_percentage.drop(world_table_percentage.columns[[1,4]], axis=1, inplace=True)
 
 
@@ -163,21 +147,29 @@ cursor = conn.cursor()
 
 print("Connected!\n")
 
+test = """ 
+select country_id
+from country"""
+cursor.execute(test)
+is_empty = len(cursor.fetchall())
 
-for a in country:
-	cursor.execute("insert into country (country_id, country_name) values('{}','{}')\n".format(country[a]['country_id'],country[a]['country_name'].replace("'","''").strip()))
+#LESUM INN Í TOFLURNAR EF ÞAÐ HEFUR EKKI NÚ ÞEGAR VERIÐ GERT
+if is_empty is 0:
 
-for b in kk:
-	cursor.execute("insert into kk (countryid, male_2010, male_2014) values('{}','{}','{}')\n".format(kk[b]['countryid'],kk[b]['male_2010'].strip(),kk[b]['male_2014'].strip()))
+	for a in country:
+		cursor.execute("insert into country (country_id, country_name) values('{}','{}')\n".format(country[a]['country_id'],country[a]['country_name'].replace("'","''").strip()))
 
-for c in kvk:
-	cursor.execute("insert into kvk (countryid,female_2010,female_2014) values('{}','{}','{}')\n".format(kvk[c]['countryid'],kvk[c]['female_2010'].strip(),kvk[c]['female_2014'].strip()))
+	for b in kk:
+		cursor.execute("insert into kk (countryid, male_2010, male_2014) values('{}','{}','{}')\n".format(kk[b]['countryid'],kk[b]['male_2010'].strip(),kk[b]['male_2014'].strip()))
 
-for d in kk_pr:
-	cursor.execute("insert into kk_pr (countryid, male_pr_2010, male_pr_2014) values('{}','{}','{}')\n".format(kk_pr[d]['countryid'],kk_pr[d]['male_pr_2010'],kk_pr[d]['male_pr_2014'].strip()))
+	for c in kvk:
+		cursor.execute("insert into kvk (countryid,female_2010,female_2014) values('{}','{}','{}')\n".format(kvk[c]['countryid'],kvk[c]['female_2010'].strip(),kvk[c]['female_2014'].strip()))
 
-for e in kvk_pr:
-	cursor.execute("insert into kvk_pr (countryid, female_pr_2010, female_pr_2014) values('{}','{}','{}')\n".format(kvk_pr[e]['countryid'],kvk_pr[e]['female_pr_2010'],kvk_pr[e]['female_pr_2014'].strip()))
+	for d in kk_pr:
+		cursor.execute("insert into kk_pr (countryid, male_pr_2010, male_pr_2014) values('{}','{}','{}')\n".format(kk_pr[d]['countryid'],kk_pr[d]['male_pr_2010'],kk_pr[d]['male_pr_2014'].strip()))
+
+	for e in kvk_pr:
+		cursor.execute("insert into kvk_pr (countryid, female_pr_2010, female_pr_2014) values('{}','{}','{}')\n".format(kvk_pr[e]['countryid'],kvk_pr[e]['female_pr_2010'],kvk_pr[e]['female_pr_2014'].strip()))
 
 
 name = input("Hi, what is your name? ")
@@ -203,7 +195,12 @@ else:
 	print("You are obese, get help!")
 
 print("\n")
-print("Here come information about your gender:")
+if sex is 'Female':
+	ave_bmi = F.ave_bmi_kvk(country, cursor)
+elif sex is 'Male':
+	ave_bmi = F.ave_bmi_kk(country, cursor)
+
+print("The average BMI for {} in {} is {}.".format(sex, country, ave_bmi))
 
 print("\n")
 print("The change in % in BMI in the world from 2010 to 2014: ")
