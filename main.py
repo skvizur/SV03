@@ -8,7 +8,11 @@ import itertools
 
 #FEMALE AND MALE TABLES
 
+<<<<<<< HEAD
 cols_world = ['Country','Sex', 'Age group', 'year_2010','year_2014']
+=======
+cols_world = ['Country','Sex', 'Age group', 'year_2014','year_2010']
+>>>>>>> b534cf74ed3068d5c312aca204a72a73527e0937
 world_table = pd.read_csv('BMI_heimur.csv', sep =',', header = None, names = cols_world, engine = 'python', skiprows =2)
 
 world_Table = world_table.sort_values(by='Sex',ascending=True)
@@ -38,6 +42,10 @@ only_males['Country nr.'] = range(1, len(only_males) + 1)
 only_males = only_males[['Country nr.','Country','Male 2010','Male 2014']]
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b534cf74ed3068d5c312aca204a72a73527e0937
 year1_KK = list(only_males.iloc[:,2])
 year2_KK = list(only_males.iloc[:,3])
 
@@ -54,6 +62,10 @@ only_females = only_females[['Country nr.','Country','Female 2010','Female 2014'
 
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b534cf74ed3068d5c312aca204a72a73527e0937
 country_nr = list(only_females.iloc[:,0])
 country_name = list(only_females.iloc[:,1])
 year1_KVK = list(only_females.iloc[:,2])
@@ -83,11 +95,19 @@ for i in range(len(country_nr)):
 
 #PERCENTAGE TABLES
 
+<<<<<<< HEAD
 cols = ['Country','BothSexes2010','Female (%) 2010', 'Male (%) 2010','Both Sexes (%) 2014', 'Female (%) 2014', 'Male (%) 2014']
 world_table_percentage = pd.read_csv('Londin.csv', sep =',"', header = None, names = cols, engine = 'python', skiprows = 4)
 
 world_table_percentage = world_table_percentage[world_table_percentage.BothSexes2010!= '"No data""']
 world_table_percentage=world_table_percentage.rename(columns = {'BothSexes2010':'Both Sexes (%) 2010'})
+=======
+cols = ['Country','BothSexes2014','Female (%) 2014', 'Male (%) 2014','Both Sexes (%) 2010', 'Female (%) 2010', 'Male (%) 2010']
+world_table_percentage = pd.read_csv('Londin.csv', sep =',"', header = None, names = cols, engine = 'python', skiprows = 4)
+
+world_table_percentage = world_table_percentage[world_table_percentage.BothSexes2014!= '"No data""']
+world_table_percentage=world_table_percentage.rename(columns = {'BothSexes2014':'Both Sexes (%) 2014'})
+>>>>>>> b534cf74ed3068d5c312aca204a72a73527e0937
 world_table_percentage.drop(world_table_percentage.columns[[1,4]], axis=1, inplace=True)
 
 
