@@ -5,6 +5,7 @@ import pprint
 import random as r
 import string
 import itertools
+import FOLL as F
 
 #FEMALE AND MALE TABLES
 
@@ -134,8 +135,8 @@ for i in range(len(country_nr)):
 host = 'localhost'
 dbname = 'obesity'
 
-username = input('User name for {}.{}: '.format(host,dbname)) 
-pw = getpass.getpass()
+username = 'hildurrungudjonsdottir' #input('User name for {}.{}: '.format(host,dbname)) 
+pw = '1313' #getpass.getpass()
 
 conn_string = "host='{}' dbname='{}' user='{}' password='{}'".format(host, dbname, username, pw)
 
@@ -195,12 +196,13 @@ else:
 	print("You are obese, get help!")
 
 print("\n")
-if sex is 'Female':
+
+if sex == 'Female':
 	ave_bmi = F.ave_bmi_kvk(country, cursor)
-elif sex is 'Male':
+elif sex == 'Male':
 	ave_bmi = F.ave_bmi_kk(country, cursor)
 
-print("The average BMI for {} in {} is {}.".format(sex, country, ave_bmi))
+print("The average BMI for {} in {} is {}.".format(lower(sex), country, ave_bmi))
 
 print("\n")
 print("The change in % in BMI in the world from 2010 to 2014: ")
