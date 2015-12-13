@@ -10,8 +10,6 @@ BMI = float(format(BMI,'.2f'))
 print("\n")
 print("Hi {}, your BMI (Body Mass Index) is {}". format(name,BMI))
 
-print("Here come information about your gender:")
-
 if BMI < 18.5:
 	print("You have to gain a lot of weight to be obese!")
 elif 18.5 <= BMI <= 24:
@@ -23,3 +21,9 @@ elif 25 < BMI < 30:
 else:
 	print("You are obese, get help!")
 
+print("\n")
+print("Here come information about your gender:")
+
+print("\n")
+print("The change in % in BMI in the world from 2010 to 2014: ")
+print("The change in % in BMI in {} from 2010 to 2014: ".format(country))
