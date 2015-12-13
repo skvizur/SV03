@@ -2,7 +2,7 @@
 name = input("Hi, what is your name? ")
 mass = float(input("What is your body weight in kilograms ? "))
 height = float(input("What is your height in cm ? "))
-sex = input("What is your gender (KK/KVK)? ")
+sex = input("What is your gender (Male/Female)? ")
 country = input("What country do you live in? ")
 m = float(height/100)
 BMI = float(mass / (m*m))
