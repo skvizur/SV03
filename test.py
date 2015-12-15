@@ -13,8 +13,8 @@ cols_world = ['Country','Sex', 'Age group', 'year_2014','year_2010']
 world_table = pd.read_csv('BMI_heimur.csv', sep =',', header = None, names = cols_world, engine = 'python', skiprows =2)
 
 world_Table = world_table.sort_values(by='Sex',ascending=True)
-world_Table['year_2010'] = world_Table['year_2010'].map(lambda x:x.rstrip('No data'))
-world_Table['year_2014'] = world_Table['year_2014'].map(lambda x:x.rstrip('No data'))
+#world_Table['year_2010'] = world_Table['year_2010'].map(lambda x:x.rstrip('No data'))
+#world_Table['year_2014'] = world_Table['year_2014'].map(lambda x:x.rstrip('No data'))
 world_Table = world_Table[world_Table.Country != 'South Sudan']
 world_Table.drop(world_Table.columns[[2]], axis=1, inplace=True)
 
@@ -100,12 +100,14 @@ df4 = df3.sort_values(by = '"Sex"', ascending = True)
 
 for i in range(2009,1979,-1):
 	df4['"%d"'%i] = df4['"%d"'%i].map(lambda x: x.split('[')[0].lstrip('"').rstrip('"'))
-	df4['"%d"'%i] = df4['"%d"'%i].map(lambda x:x.rstrip('��_'))
-	df4=df4.rename(columns = {'"%d"'%i:'%d'%i})	
+	#df4['"%d"'%i] = df4['"%d"'%i].map(lambda x: x.replace(' ‰Û_','-1'))
+	df4=df4.rename(columns = {'"%d"'%i:'%d'%i})
 
 
 df4 = df4.rename(columns = {'"Sex"':'Sex'})
 df4['Sex'] = df4['Sex'].map(lambda x: x.lstrip('"').rstrip('"'))
+
+print(df4)
 
 UniqueNames = df4.Sex.unique()
 
@@ -119,8 +121,10 @@ females_years = DataFrameDict['Female']
 females_years.drop(females_years.columns[[1]], axis = 1, inplace = True)
 females_years = females_years.sort_values(by = 'Country', ascending = True)
 females_years['Country nr.'] = range(1, len(females_years) + 1)
+#print(females_years)
 
 countries = pd.DataFrame({'country_id': females_years['Country nr.'], 'country_name': females_years['Country']})
+print(countries)
 
 females_years = females_years[['Country nr.','1980','1981','1982','1983','1984','1985','1986','1987',
 '1988','1989','1990','1991','1992','1993','1994','1995','1996','1997','1998','1999','2000','2001','2002',
@@ -145,31 +149,16 @@ males_years = males_years[['Country nr.','1980','1981','1982','1983','1984','198
 males_years['2010'] = year1_KK
 males_years['2014'] = year2_KK
 
-every_year = list(males_years.columns[1:])
-
-index = 1
-for i in range(1980,2009,1):
-	males_years=males_years.rename(columns = {'%d'%i:'%d'%index})
-	index+=1
-
-males_years = males_years.rename(columns = {'2009':'30'})
-males_years = males_years.rename(columns = {'2010':'31'})
-males_years = males_years.rename(columns = {'2014':'32'})	
 males_years = males_years.rename(columns = {'Country nr.':'countryid'})	
 
-print(males_years)	
+#print(males_years)	
 
-updated_males = pd.melt(males_years, id_vars = 'countryid',value_vars = list(males_years.columns[1:]), var_name = 'yearid',value_name = 'bmi_male')
+updated_males = pd.melt(males_years, id_vars = 'countryid',value_vars = list(males_years.columns[1:]), var_name = 'year',value_name = 'bmi_male')
 updated_males = updated_males.sort_values(by = 'countryid', ascending = True)
 updated_males['bmi_female'] = kvk_all_years
 updated_males = updated_males.sort_values(by = ['countryid'], ascending = True)
 print(updated_males)
 
-#every_year = list(males_years.columns[1:])
-year_id = list(range(1,len(every_year)+1))
-
-
-id_year= pd.DataFrame({'year_id' : year_id,'year':every_year})
 
 
 
@@ -194,12 +183,19 @@ print("Connected!\n")
 engine = create_engine('postgresql://Fanndis:fanndis@localhost/obesity')
 
 countries.to_sql('country', engine, if_exists = 'append', index = False)
-id_year.to_sql('years', engine, if_exists = 'append', index = False)
+#id_year.to_sql('years', engine, if_exists = 'append', index = False)
 updated_males.to_sql('bmi', engine, if_exists = 'append', index = False)
 
-
-
 conn.commit()
+
+
+s = """ update bmi 
+		set bmi_male = NULL 
+		where bmi_male < 0; """
+
+cursor.execute(s)		
+
+cursor.execute("update bmi set bmi_female = NULL where bmi_female < 0;")
 
 
 cursor.close()

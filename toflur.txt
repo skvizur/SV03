@@ -4,30 +4,10 @@ country_name varchar(250),
 primary key (country_id)
 );
 
-create table kk (
+create table bmi (
 countryid integer references country(country_id),
-male_2010 real,
-male_2014 real,
-primary key (countryid)
-);
-
-create table kvk (
-countryid integer references country(country_id),
-female_2010 real,
-female_2014 real,
-primary key (countryid)
-);
-
-create table kk_pr (
-countryid integer references country(country_id),
-male_pr_2010 real,
-male_pr_2014 real,
-primary key (countryid)
-);
-
-create table kvk_pr (
-countryid integer references country(country_id),
-female_pr_2010 real,
-female_pr_2014 real,
-primary key (countryid)
+year integer,
+bmi_male real,
+bmi_female real,
+primary key (countryid,year)
 );
