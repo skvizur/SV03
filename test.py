@@ -178,8 +178,8 @@ id_year= pd.DataFrame({'year_id' : year_id,'year':every_year})
 host = 'localhost'
 dbname = 'obesity'
 
-username = 'Fanndis' #input('User name for {}.{}: '.format(host,dbname)) 
-pw = 'lakkris' #getpass.getpass()
+username = 'hildurrungudjonsdottir' #input('User name for {}.{}: '.format(host,dbname)) 
+pw = '1313' #getpass.getpass()
 
 conn_string = "host='{}' dbname='{}' user='{}' password='{}'".format(host, dbname, username, pw)
 
@@ -191,7 +191,7 @@ cursor = conn.cursor()
 
 print("Connected!\n")
 
-engine = create_engine('postgresql://Fanndis:fanndis@localhost/obesity')
+engine = create_engine('postgresql://hildurrungudjonsdottir:hildurrungudjonsdottir@localhost/obesity')
 
 countries.to_sql('country', engine, if_exists = 'append', index = False)
 id_year.to_sql('years', engine, if_exists = 'append', index = False)
