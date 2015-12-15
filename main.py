@@ -127,6 +127,21 @@ kk_pr = {}
 
 for i in range(len(country_nr)):
 	kk_pr[i] = {'countryid':country_nr[i],'male_pr_2010':year1_KKpr[i],'male_pr_2014':year2_KKpr[i]}
+
+
+cols_names = ['Country','Continent']
+world_countries = pd.read_csv('country_continent.csv', sep =',', header = None, names = cols_names, engine = 'python', skiprows =1)
+world_Countries = world_countries.sort_values(by='Continent',ascending=True)
+
+only_continent = []
+only_continent = world_Countries['Continent']
+only_countries = []
+only_countries = world_Countries['Country']
+
+country_continent = {}
+for i in range(len(only_continent)):
+	country_continent[i] = {'country':only_countries[i],'continent':only_continent[i]}
+	print(country_continent[i])
 	
 
 
@@ -135,8 +150,8 @@ for i in range(len(country_nr)):
 host = 'localhost'
 dbname = 'obesity'
 
-username = 'hildurrungudjonsdottir' #input('User name for {}.{}: '.format(host,dbname)) 
-pw = '1313' #getpass.getpass()
+username = 'Fanndis' #input('User name for {}.{}: '.format(host,dbname)) 
+pw = 'lakkris' #getpass.getpass()
 
 conn_string = "host='{}' dbname='{}' user='{}' password='{}'".format(host, dbname, username, pw)
 
@@ -172,6 +187,8 @@ if is_empty is 0:
 	for e in kvk_pr:
 		cursor.execute("insert into kvk_pr (countryid, female_pr_2010, female_pr_2014) values('{}','{}','{}')\n".format(kvk_pr[e]['countryid'],kvk_pr[e]['female_pr_2010'],kvk_pr[e]['female_pr_2014'].strip()))
 
+	for f in country_continent:
+		cursor.execute("insert into country_continent (country, continent) values ('{}','{}')\n".format(country_continent[f]['country'].strip(),country_continent[f]['continent'].strip()))
 
 name = input("Hi, what is your name? ")
 mass = float(input("What is your body weight in kilograms ? "))
