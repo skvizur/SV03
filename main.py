@@ -150,8 +150,8 @@ for i in range(len(only_continent)):
 host = 'localhost'
 dbname = 'obesity'
 
-username = 'Fanndis' #input('User name for {}.{}: '.format(host,dbname)) 
-pw = 'lakkris' #getpass.getpass()
+username = 'hildurrungudjonsdottir' #input('User name for {}.{}: '.format(host,dbname)) 
+pw = '1313' #getpass.getpass()
 
 conn_string = "host='{}' dbname='{}' user='{}' password='{}'".format(host, dbname, username, pw)
 
@@ -191,12 +191,34 @@ if is_empty is 0:
 		cursor.execute("insert into country_continent (country, continent) values ('{}','{}')\n".format(country_continent[f]['country'].strip(),country_continent[f]['continent'].strip()))
 
 name = input("Hi, what is your name? ")
-mass = float(input("What is your body weight in kilograms ? "))
+weight = float(input("What is your body weight in kilograms ? "))
+if weight <= 0 or weight > 500:
+	print("Weight cannot be less than 0 kg or more than 500 kg, try again..")
+	weight = float(input("What is your body weight in kilograms ? "))
+
 height = float(input("What is your height in cm ? "))
+if height <= 0:
+	print("Height cannot be less than 0 cm..")
+	height = float(input("What is your height in cm ? "))
+
 sex = input("What is your gender (Male/Female)? ")
+if sex != 'Female' and sex != 'Male':
+	print("You need to enter either Male or Female, try again..")
+	sex = input("What is your gender (Male/Female)? ")
+
 country = input("What country do you live in? ")
+#c = """
+#select country_name 
+#from country
+#where country_name = %s """ % country
+#cursor.execute(c)
+#c = cursor.fetchall()
+#if len(c) is 0:
+#	print("The country you entered is not valid, try again..")
+#	country = input("What country do you live in? ")
+
 m = float(height/100)
-BMI = float(mass / (m*m))
+BMI = float(weight / (m*m))
 BMI = float(format(BMI,'.2f'))
 print("\n")
 print("Hi {}, your BMI (Body Mass Index) is {}". format(name,BMI))
@@ -215,15 +237,38 @@ else:
 print("\n")
 
 if sex == 'Female':
-	ave_bmi = F.ave_bmi_kvk(country, cursor)
+	ave_bmi_country = F.ave_bmi_kvk_country(country, cursor)[0][0]
+	ave_bmi_country = float(format(ave_bmi_country, '.2f'))
+	ave_bmi_world = F.ave_bmi_kvk_world(cursor)[0][0]
+	ave_bmi_world = float(format(ave_bmi_world, '.2f'))
 elif sex == 'Male':
-	ave_bmi = F.ave_bmi_kk(country, cursor)
+	ave_bmi_country = F.ave_bmi_kk_country(country, cursor)[0][0]
+	ave_bmi_country = float(format(ave_bmi_country, '.2f'))
+	ave_bmi_world = F.ave_bmi_kk_world(cursor)[0][0]
+	ave_bmi_world = float(format(ave_bmi_world, '.2f'))
 
-print("The average BMI for {} in {} is {}.".format(lower(sex), country, ave_bmi))
+print("The average BMI for {} in {} is {}".format(sex, country, ave_bmi_country))
+print("The average BMI for {} in the world is {}".format(sex, ave_bmi_world))
 
-print("\n")
-print("The change in % in BMI in the world from 2010 to 2014: ")
-print("The change in % in BMI in {} from 2010 to 2014: ".format(country))
+if ave_bmi_world > BMI:
+	prosenta = (BMI / ave_bmi_world)*100
+	prosenta = format(prosenta, '.2f')
+	print("You have a lower BMI than {}% of {} in the world".format(prosenta, sex))
+elif ave_bmi_world < BMI:
+	prosenta = (ave_bmi_world / BMI)*100
+	prosenta = format(prosenta, '.2f')
+	print("You have a higher BMI than {}% of {} in the world".format(prosenta, sex))
+
+if ave_bmi_country > BMI:
+	prosenta = (BMI / ave_bmi_country)*100
+	prosenta = format(prosenta, '.2f')
+	print("You have a lower BMI than {}% of {} in {}".format(prosenta, sex, country))
+elif ave_bmi_country < BMI:
+	prosenta = (ave_bmi_country / BMI)*100
+	prosenta = format(prosenta, '.2f')
+	print("You have a higher BMI than {}% of {} in {}".format(prosenta, sex, country))
+
+
 
 
 conn.commit()
